@@ -1,0 +1,13 @@
+{% extends 'timing/base.html' %}
+
+{% block heading %}
+    <h2>Create new</h2>
+{% endblock %}
+
+{% block content %}
+    <form action="{% url 'timing:new_workout' %}" method='post'>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button name="submit">add topic</button>
+    </form>
+{% endblock %}

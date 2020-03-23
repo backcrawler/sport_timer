@@ -1,0 +1,14 @@
+{% extends 'timing/base.html' %}
+
+{% block heading %}
+    <h1>Workouts added</h1>
+    <p><a href="{% url 'timing:new_workout' %}">Add new</a></p>
+{% endblock %}
+
+{% block content %}
+    {% for workout in workouts %}
+        <li>{{workout.name}}</li>
+    {% empty %}
+        <li>No workouts have been added yet.</li>
+    {% endfor %}
+{% endblock %}
