@@ -1,0 +1,28 @@
+{% extends 'timing/base.html' %}
+
+{% block heading %}
+    <h1>Exercise list at "{{ workout.name }}"</h1>
+    <p></p>
+    <div class="card">
+        <div class="card-body">
+        <p class="card-title">Warmup time: {{ workout.warmup_time }}</p>
+        <p class="card-text">Cooldown time: {{ workout.cooldown_time }}</p>
+        <p>Laps required: {{ workout.laps }}</p>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+{% block content %}
+    <ul>
+    {% for exr in exercises %}
+        <li><a href="{% url 'timing:exr_detail' workout.id exr.id %}">{{exr.name}}</a></li>
+    {% empty %}
+        <li>No exercises here</li>
+    {% endfor %}
+    </ul>
+    <li><a href="{% url 'timing:new_exercise' workout.id %}" >Add another exercise</a></li>
+    <li><a href="{% url 'timing:workout_update' workout.id %}" >Update</a></li>
+    <li><a href="{% url 'timing:del_workout' workout.id %}" >Delete this</a></li>
+{% endblock %}

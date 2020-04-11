@@ -1,0 +1,13 @@
+{% extends 'timing/base.html' %}
+
+{% block heading %}
+    <h2>Deleting this exercise:</h2>
+{% endblock %}
+
+{% block content %}
+    <form method='post'>
+        {% csrf_token %}
+        <p>Are you sure you want to delete {{exercise.name}} from {{workout.name}}?</p>
+        <input type="submit", value="Confirm">
+    </form>
+{% endblock %}

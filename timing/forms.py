@@ -1,5 +1,5 @@
 from django import forms
-from .models import Workout
+from .models import Workout, Exercise
 
 
 class WorkoutForm(forms.ModelForm):
@@ -8,6 +8,15 @@ class WorkoutForm(forms.ModelForm):
         model = Workout
         fields = ['name', 'warmup_time', 'cooldown_time', 'laps']
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
 
+class ExerciseForm(forms.ModelForm):
+
+    class Meta:
+        model = Exercise
+        fields = ['name', 'duration', 'preptime']
+
+
+class MyExerciseForm(forms.Form):
+    name = forms.CharField(initial='My Exercise')
+    duration = forms.IntegerField(initial=30)
+    preptime = forms.IntegerField(initial=0)

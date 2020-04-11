@@ -7,7 +7,7 @@
 
 {% block content %}
     {% for workout in workouts %}
-        <li>{{workout.name}}</li>
+        <li><a href="{% url 'timing:workout_detail' workout.id %}">{{workout.name}}</a></li>
     {% empty %}
         <li>No workouts have been added yet.</li>
     {% endfor %}
