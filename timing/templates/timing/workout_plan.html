@@ -10,7 +10,7 @@
         <p>Laps required: {{ workout.laps }}</p>
         </div>
     </div>
-{% endblock %}
+{% endblock heading %}
 
 
 
@@ -25,4 +25,6 @@
     <li><a href="{% url 'timing:new_exercise' workout.id %}" >Add another exercise</a></li>
     <li><a href="{% url 'timing:workout_update' workout.id %}" >Update</a></li>
     <li><a href="{% url 'timing:del_workout' workout.id %}" >Delete this</a></li>
-{% endblock %}
+    <p></p>
+    <p><a href=".."><-- Back to full workout list</a></p>
+{% endblock content %}

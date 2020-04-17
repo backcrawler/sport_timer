@@ -2,12 +2,12 @@
 
 {% block heading %}
     <h2>Create new</h2>
-{% endblock %}
+{% endblock heading %}
 
 {% block content %}
     <form action="{% url 'timing:new_workout' %}" method='post'>
         {% csrf_token %}
         {{ form.as_p }}
-        <button name="submit">add topic</button>
+        <button name="submit">Add new workout</button>
     </form>
-{% endblock %}
+{% endblock content %}

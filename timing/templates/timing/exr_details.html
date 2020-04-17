@@ -10,5 +10,7 @@
 
     <p><a href="{% url 'timing:exr_update' workout.id exercise.id %}" >Update</a></p>
     <p><a href="{% url 'timing:del_exercise' workout.id exercise.id %}">Delete this</a></p>
+    <p></p>
+    <p><a href=".."><-- Back to {{workout.name}}</a></p>
 
 {% endblock %}

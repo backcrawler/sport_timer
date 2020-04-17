@@ -4,17 +4,18 @@ from django.contrib.postgres.fields import ArrayField
 
 
 class Workout(models.Model):
-    '''Represents a full worout'''
+    '''Represents a full workout'''
 
     name = models.CharField(default='My Workout', max_length=120)
     warmup_time = models.IntegerField(default=0)
     cooldown_time = models.IntegerField(default=0)
     laps = models.IntegerField(default=1)
     exrs = ArrayField(models.IntegerField(), default=list)
+    date_added = models.DateTimeField(auto_now_add=True)  # TODO: date_added
     owner = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'Workout({self.name}: {self.id})'
+        return f'Workout("{self.name}", id_{self.id})'
 
 
 class Exercise(models.Model):
@@ -49,4 +50,4 @@ class Exercise(models.Model):
         plan.save()
 
     def __str__(self):
-        return f'Exercise({self.name}: {self.id})'
+        return f'Exercise("{self.name}", id_{self.id})'

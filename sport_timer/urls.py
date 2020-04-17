@@ -22,3 +22,10 @@ urlpatterns = [
     path('adminenter/', admin.site.urls),
     path('', include('timing.urls', namespace='timing'))
 ]
+
+
+# def get_success_url(self):
+#     """Return the URL to redirect to after processing a valid form."""
+#     if self.success_url:
+#         url = self.success_url.format(**self.object.__dict__)
+# self.object = form.save()
