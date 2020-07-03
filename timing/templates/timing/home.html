@@ -1,0 +1,23 @@
+{% extends 'timing/base.html' %}
+
+{% block heading %}
+    <div class="jumbotron p-4 p-md-5 text-white rounded bg-dark">
+    <div class="col-md-6 px-0">
+      <h1 class="display-4 font-italic">Interactive timer for sport exercices</h1>
+      <p class="lead my-3">Create your own workouts and exercices
+      for saving and maintaining you progress
+      </p>
+      <p class="lead mb-0"><a href="{% url 'users:register' %}" class="text-white font-weight-bold">Sign up for more...</a></p>
+    </div>
+  </div>
+{% endblock %}
+
+{% block content %}
+    <div class="blog-post">
+        {% if user.is_authenticated %}
+        <a href="{% url 'timing:show_workouts' %}">To the workout list</a>
+        {% else %}
+        <a href="{% url 'users:register' %}" class="text-white font-weight-bold">Sign up</a> for further expirience
+        {% endif %}
+    </div>
+{% endblock %}

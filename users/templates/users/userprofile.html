@@ -1,0 +1,13 @@
+{% extends 'timing/base.html' %}
+
+{% block heading %}
+    <h1>Hello</h1>
+{% endblock %}
+
+{% block content %}
+    <a href="{% url 'timing:show_workouts' %}">To THE WORKOUTS</a>
+    <p>Your stats:</p>
+    <p>Total workout number:</p>
+    <p>Total exercise number:</p>
+    <p>Favorite workouts list:</p>
+{% endblock %}

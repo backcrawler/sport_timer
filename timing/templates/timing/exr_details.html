@@ -1,16 +1,20 @@
 {% extends 'timing/base.html' %}
 
 {% block heading %}
-    <h1>{{ exercise.name }} details</h1>
+    <h2 class="text-center">{{ exercise.name }} details</h2>
 {% endblock %}
 
 {% block content %}
-    <p>Duration: {{ exercise.duration }}</p>
-    <p>Preptime: {{ exercise.preptime }}</p>
+    <div class="card text-center">
+        <p>Duration: {{ exercise.duration }}</p>
+        <p>Preptime: {{ exercise.preptime }}</p>
+    </div>
 
-    <p><a href="{% url 'timing:exr_update' workout.id exercise.id %}" >Update</a></p>
-    <p><a href="{% url 'timing:del_exercise' workout.id exercise.id %}">Delete this</a></p>
+    <div class="row">
+        <p><a href="{% url 'timing:exr_update' workout.id exercise.id %}" class="btn btn-info">Update</a></p>
+        <p><a href="{% url 'timing:del_exercise' workout.id exercise.id %}" class="btn btn-danger">Delete this</a></p>
+    </div>
+
     <p></p>
     <p><a href=".."><-- Back to {{workout.name}}</a></p>
-
 {% endblock %}

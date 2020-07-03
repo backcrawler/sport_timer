@@ -20,10 +20,18 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
+
+# importing extra data from external json:
+with open("keys.json", "r") as external_json:
+    loaded_dict = json.load(external_json)
+
 # SECURITY WARNING: keep the secret key used in production secret!
-# importing secret key from external json:
-with open("s_key.json", "r") as external_json:
-    SECRET_KEY = json.load(external_json)['SECRET_KEY']
+SECRET_KEY = loaded_dict['SECRET_KEY']
+
+POSTGRES_USER = loaded_dict['DB_USER']
+POSTGRES_PASSWORD = loaded_dict['DB_PASSWORD']
+POSTGRES_HOST = loaded_dict['DB_HOST']
+POSTGRES_PORT = loaded_dict['DB_PORT']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -40,7 +48,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'timing',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -81,10 +91,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'timingdb',
-        'USER': 'postgres',
-        'PASSWORD': '1218',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'USER': POSTGRES_USER,
+        'PASSWORD': POSTGRES_PASSWORD,
+        'HOST': POSTGRES_HOST,
+        'PORT': POSTGRES_PORT,
     }
 }
 
@@ -121,9 +131,17 @@ USE_L10N = True
 
 USE_TZ = True
 
+ADMINS = []
+
+if loaded_dict.get('MAIN_ADMIN_NAME') and loaded_dict.get('MAIN_ADMIN_MAIL'):
+    extra_tuple = (loaded_dict.get('MAIN_ADMIN_NAME'), loaded_dict.get('MAIN_ADMIN_MAIL'))
+    ADMINS.append(extra_tuple)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+MEDIA_URL = '/images/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')

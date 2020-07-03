@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" data-scroll-lock="false">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Sortable | Simple list | Draggable JS Examples</title>
+    <meta name="description" content="Part of timing app that includes drag-and-drop functionality">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="theme-color" content="#212529">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Draggable Workouts">
+    <meta property="og:title" content="Sort elements in a single collection, maintaining order for all but the element being dragged.">
+    <meta property="og:description" content="Part of timing app that includes drag-and-drop functionality">
+    <meta property="og:image" content="https://shopify.github.io/draggable/assets/img/social/draggable-social.png">
+    <meta property="og:url" content="">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'timing/css/draggy.css' %}">
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+</head>
+
+<body id="PageSimpleList">
+    <button type="button" id="MobileNavActivator" class="Hamburger" aria-controls="Sidebar" aria-expanded="true"><div class="HamburgerBun"><div class="HamburgerPatty"></div></div></button>
+
+    <main class="Main" role="main">
+
+        <div class="MainInterior">
+
+            <header class="PageHeader">
+                <h1 class="Heading Heading--size1">Sortable</h1>
+                <h2 class="Subheading">Sort elements in a single collection, maintaining order for all but the element being dragged.</h2>
+                </header>
+
+            <section id="SimpleList" class="SimpleList">
+                <article class="StackedListWrapper">
+                    <header class="StackedListHeader"><h3 class="Heading Heading--size3 Heading--colorWhite">Simple list</h3></header>
+                    <ul class="StackedList" tabindex="0">
+                    {% for exr in exercises %}
+                    <li class="StackedListItem StackedListItem--isDraggable StackedListItem--item1" tabindex="1">
+                        <a href="{% url 'timing:exr_detail' workout.id exr.id %}">
+                        <div class="StackedListContent" id="elem_{{exr.id}}"><h4 class="Heading Heading--size4 text-no-select">{{exr.name}}</h4>
+    <!--                                <div class="DragHandle"></div>-->
+    <!--                        <input type="checkbox" name="posting_box"  id="cbox_{{exr.id}}">-->
+                            <div class="Pattern Pattern--typeHalftone"></div>
+                            <div class="Pattern Pattern--typePlaced"></div>
+                        </div>
+                        </a>
+                    </li>
+                    {% endfor %}
+                    </ul>
+                </article>
+                {% csrf_token %}
+                <button type="submit" class="btn btn-warning" id="submiting_btn">Submit data</button>
+                <button type="submit" class="btn btn-danger align-right" id="deleting_btn">Delete posts</button>
+                <div id="results"></div>
+            </section>
+
+        </div>
+    </main>
+
+    <div class="GridOverlay GridOverlay--isHidden"></div>
+    <div id="draggable-live-region" aria-relevant="additions" aria-atomic="true" aria-live="assertive" role="log" style="position: fixed; width: 1px; height: 1px; top: -1px; overflow: hidden;"></div>
+
+    <script src="{% static 'timing/js/test1.js' %}"></script>
+    <script src="{% static 'timing/js/test2.js' %}"></script>
+    <script src="{% static 'timing/js/test3.js' %}"></script>
+    <script src="{% static 'timing/js/index.js' %}"></script>
+
+</body>
+</html>

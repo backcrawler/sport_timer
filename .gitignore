@@ -4,4 +4,7 @@
 /timing/models3.py
 /__pycache__/
 /ideaBackup/
-/s_key.json
+/.idea/
+/keys.json
+/users/static/
+/static/

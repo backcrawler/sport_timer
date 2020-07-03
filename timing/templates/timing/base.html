@@ -1,35 +1,96 @@
 <!DOCTYPE html>
+{% load static %}
 
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="Timer for sport workouts">
+        <meta name="author" content="NL">
+        <title>Sport Timer</title>
 
-        {% load static %}
+        <!-- Core CSS -->
+        <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" crossorigin="anonymous">
 
-        <title>Test</title>
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-        <link href='//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" href="{% static 'css/blog.css' %}">
-    </head>
+        <!-- Favicons -->
+        <link rel="icon" href="https://getbootstrap.com/docs/4.4/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
+        <link rel="icon" href="https://getbootstrap.com/docs/4.4/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
+        <link rel="manifest" href="https://getbootstrap.com/docs/4.4/assets/img/favicons/manifest.json">
+        <meta name="msapplication-config" content="/docs/4.4/assets/img/favicons/browserconfig.xml">
+        <meta name="theme-color" content="#563d7c">
 
-    <body>
-        {% if user.is_authenticated %}
-            <p>Hello, <a href="{% url 'timing:show_workouts' %}">{{user}}</a>!</p>
-            <p>Log out</p>
-        {% else %}
-            <p>Log in</p>
-        {% endif %}
+         <!-- Custom styles for this template -->
+        <link href="{% static 'timing/css/extra_css.css' %}" rel="stylesheet">
+        <link href="{% static 'timing/css/wannabe_blog.css' %}" rel="stylesheet">
 
-        {% block heading %}
-        {% endblock heading %}
+        <style>
+            h2.text-center {
+            margin-top:7%;
+            }
 
+            div.marginer {
+            margin-top:1%;
+            margin-bottom:2%;
+            }
+
+          .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+          }
+
+          @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+              font-size: 3.5rem;
+            }
+          }
+        </style>
+
+        {% block styles %}
+        {% endblock styles %}
+  </head>
+
+  <body>
+    <div class="container">
+        <header class="blog-header py-3">
+            <div class="row flex-nowrap justify-content-between align-items-center">
+              <div class="col-4 pt-1">
+                <a class="text-muted" href="#"></a>
+              </div>
+              <div class="col-4 text-center">
+                <a class="blog-header-logo text-dark" href="/">Sport Timer</a>
+              </div>
+              <div class="col-4 d-flex justify-content-end align-items-center">
+                  {% if user.is_authenticated %}
+                    Hello, <a href="{% url 'users:userprofile' %}">{{user}}</a>!
+                    <a class="btn btn-sm btn-outline-secondary" href="{% url 'users:logout' %}" style="margin-left:10px">Log out</a>
+                  {% else %}
+                    <a class="btn btn-sm btn-outline-secondary" href="{% url 'users:login' %}">Sign in</a>
+                  {% endif %}
+              </div>
+            </div>
+        </header>
+            {% block heading %}
+            {% endblock heading %}
+    </div>
+
+
+    <main role="main" class="container">
         {% block content %}
         {% endblock content %}
-        <p></p>
-        <p><a href="/"><-- Home</a></p>
-    </body>
+    </main><!-- /.container -->
+
+    <footer class="blog-footer">
+      <p>Fast and easy workout timing for you</p>
+      <p>2020</p>
+    </footer>
 
     {% block scripts %}
     {% endblock scripts %}
+
+    </body>
 </html>

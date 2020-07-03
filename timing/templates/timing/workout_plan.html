@@ -1,30 +1,70 @@
 {% extends 'timing/base.html' %}
+{% load static %}
+
+{% block styles %}
+<!--    <link rel="stylesheet" type="text/css" href="{% static 'timing/css/draggy.css' %}">-->
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+{% endblock styles %}
 
 {% block heading %}
-    <h1>Exercise list at "{{ workout.name }}"</h1>
+    <button type="button" id="MobileNavActivator" class="Hamburger" aria-controls="Sidebar" aria-expanded="true" style="visibility:hidden"><div class="HamburgerBun"><div class="HamburgerPatty"></div></div></button>
+    <h2 class="text-center">Exercise list at "{{ workout.name }}"</h2>
     <p></p>
-    <div class="card">
-        <div class="card-body">
-        <p class="card-title">Warmup time: {{ workout.warmup_time }}</p>
-        <p class="card-text">Cooldown time: {{ workout.cooldown_time }}</p>
-        <p>Laps required: {{ workout.laps }}</p>
+
+    <div class="card marginer">
+        <div class="row">
+        <div class="col-4">Warmup time: {{ workout.warmup_time }}</div>
+        <div class="col-4">Cooldown time: {{ workout.cooldown_time }}</div>
+        <div>Laps required: {{ workout.laps }}</div>
         </div>
+        <div class="row "><a href="{% url 'timing:workout_update' workout.id %}" class="text-center">Update</a></div>
     </div>
+
 {% endblock heading %}
 
-
-
 {% block content %}
-    <ul>
-    {% for exr in exercises %}
-        <li><a href="{% url 'timing:exr_detail' workout.id exr.id %}">{{exr.name}}</a></li>
-    {% empty %}
-        <li>No exercises here</li>
-    {% endfor %}
-    </ul>
-    <li><a href="{% url 'timing:new_exercise' workout.id %}" >Add another exercise</a></li>
-    <li><a href="{% url 'timing:workout_update' workout.id %}" >Update</a></li>
-    <li><a href="{% url 'timing:del_workout' workout.id %}" >Delete this</a></li>
+    <section id="SimpleList" class="SimpleList">
+        <article class="StackedListWrapper">
+            <header class="StackedListHeader"><h3 class="Heading Heading--size3 Heading--colorWhite">{{ workout.name }}</h3></header>
+            <div class="StackedList" tabindex="0">
+                {% for exr in exercises %}
+                <div class="StackedListItem StackedListItem--isDraggable StackedListItem--item1" tabindex="1">
+                    <div class="StackedListContent card" id="elem_{{exr.id}}">
+                        <a href="{% url 'timing:exr_detail' workout.id exr.id %}"><h4 class="Heading Heading--size4 text-no-select">{{exr.name}}</h4></a>
+<!--                                <div class="DragHandle"></div>-->
+<!--                        <div class="card" style="width:10px; height:10px">-->
+<!--                        </div>-->
+<!--                        <input type="checkbox" name="posting_box"  id="cbox_{{exr.id}}" style="right:0px; top:0px">-->
+                        <div class="Pattern Pattern--typeHalftone"></div>
+                        <div class="Pattern Pattern--typePlaced"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </article>
+        {% csrf_token %}
+        <button type="submit" class="btn btn-warning" id="submiting_btn">Submit data</button>
+        <button type="submit" class="btn btn-danger align-right" id="deleting_btn">Delete posts</button>
+        <button type="submit" class="btn btn-info" id="test_btn">Test data</button>
+        <div id="results"></div>
+    </section>
+
+    <div class="row">
+        <ul>
+        <li><a href="{% url 'timing:new_exercise' workout.id %}" >Add another exercise</a></li>
+        <li><a href="{% url 'timing:workout_update' workout.id %}" >Update</a></li>
+        <li><a href="{% url 'timing:del_workout' workout.id %}" >Delete this</a></li>
+
+        </ul>
+    </div>
     <p></p>
     <p><a href=".."><-- Back to full workout list</a></p>
 {% endblock content %}
+
+
+{% block scripts %}
+    <script src="{% static 'timing/js/test1.js' %}"></script>
+    <script src="{% static 'timing/js/test2.js' %}"></script>
+    <script src="{% static 'timing/js/test3.js' %}"></script>
+    <script src="{% static 'timing/js/index.js' %}"></script>
+{% endblock scripts %}

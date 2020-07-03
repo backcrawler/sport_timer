@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+
+        <title>Sport Timer</title>
+        <link href='//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+
+        {% block styles %}
+        {% endblock styles %}
+    </head>
+
+    <body>
+        {% if user.is_authenticated %}
+            <p>Hello, <a href="{% url 'timing:show_workouts' %}">{{user}}</a>!</p>
+            <p>Log out</p>
+        {% else %}
+            <a href="{% url 'users:login' %}">Log in</a>
+        {% endif %}
+
+        {% block heading %}
+        {% endblock heading %}
+
+        {% block content %}
+        {% endblock content %}
+        <p></p>
+        <p><a href="/"><-- Home</a></p>
+    </body>
+
+    {% block scripts %}
+    {% endblock scripts %}
+</html>
