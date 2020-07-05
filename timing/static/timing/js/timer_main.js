@@ -1,115 +1,73 @@
-var fps = 60;
+var btn = document.getElementById("startPauseBtn");
+var resBtn = document.getElementById("resetBtn");
+var slider = document.getElementById("slider");
+var output = document.getElementById("output");
 
-var Timer = function(obj){  //main Timer "class"
-  this.time = obj.time;  //the time to count
-  this.fps = obj.fps;
-  this.onEnd = obj.onEnd || null;
-  this.onStart = obj.onStart || null;
-  this.intervalID = null;
+var timings = [5, 2, 3];
+var running = 0;
+var j = 0;
+var time = timings[0]*10;
 
-  this.start = () => {
-    this.startTime = this.time
-    this.interval = setInterval(this.update, 1000 / this.fps);
-    this.onStart ? this.onStart() : void 0;
-    return this;
-  };
-  this.stop = () => {
-    clearInterval(this.interval);
-    this.onEnd ? this.onEnd() : void 0;
-  };
-  this.onTick = () => {
-    id("output").innerHTML = this.get("dig");
-    id("slider").style.width = this.get()/this.startTime *100 + "%";
-  }
-  this.update = () => {
-    this.time > 0 ? this.time -= 1/this.fps : this.stop(); // either continue or stop the timer
-    this.onTick ? this.onTick() : void 0;
-    return this.get();
-  }
-  this.get = (par) => {
-    switch(par) {
-      case undefined:
-        return this.time;
-        break;
-      case "dig":
-        return Math.ceil(this.time);
-        break;
-      case "end":
-        return this.onEnd();
-        break;
+function startPause(){
+	if(running == 0){
+		running = 1;
+		decrement();
+		btn.innerHTML = "Pause";
+	}else{
+		running = 0;
+		btn.innerHTML = "Resume";
+	}
+};
+
+function reset(){
+	running = 0;
+    time = timings[0]*10;
+    j = 0;
+	output.innerHTML = "00:00";
+	btn.innerHTML = "Start";
+};
+
+function decrement(){
+	if(running == 1){
+		setTimeout(function(){
+            time--;
+            if (time <= 0) {
+                running = 0;
+                output.innerHTML = "00:00";
+                slider.style.width = 0 + "%";
+                j++;
+                if (timings[j] != undefined){
+                    time = timings[j]*10;
+                    startPause();
+                    return null;
+                }
+                console.log('finish');
+            }
+			var mins = Math.floor(time / 10 / 60);
+			if(mins <= 9){
+				mins = "0" + mins;
+			}
+			var secs = Math.floor(time / 10);
+			if(secs <= 9){
+				secs = "0" + secs;
+			}
+			slider.style.width = time/timings[j] *10 + "%"
+			output.innerHTML = mins + ":" + secs;
+			decrement();
+		}, 100);
+	}
+};
+
+function initializeTimer() {
+    let mins = Math.floor(time / 10 / 60);
+    if(mins <= 9){
+        mins = "0" + mins;
     }
-  }
-}
-
-function onTimerStart(){
-  console.log("timer started");
-}
-function endTimer(){
-  console.log("timer ended");
-}
-
-function id(id){
-  return document.getElementById(id);
-}
-
-let timers = [];
-let info = [4,10,3,2,1,0,5];
-info.forEach(element => {
-    let curTimer = new Timer({
-      time: element,
-      fps: fps,
-      onEnd: endTimer,
-      onStart: onTimerStart
-    });
-    timers.push(curTimer);
-});
-
-const sleep = (milliseconds) => {
-  return new Promise(resolve => setTimeout(resolve, milliseconds))
+    let secs = Math.floor(time / 10);
+    if(secs <= 9){
+        secs = "0" + secs;
+    }
+    output.innerHTML = mins + ":" + secs;
 };
 
-const doTiming = async () => {
-  for (let x of timers) {
-    let sleepTime = x.time;
-    x.start();
-    requestAnimationFrame(x.onTick);
-    await sleep(x.time*1000);
-  }
-};
-
-function startTimer(seconds, container, oncomplete) {
-    var startTime, timer, obj, ms = seconds*1000,
-        display = document.getElementById(container),
-        pausingBtn = document.getElementById('pausing_btn'),
-        resumeBtn = document.getElementById('resuming_btn');
-    obj = {};
-    obj.resume = function() {
-        startTime = new Date().getTime();
-        timer = setInterval(obj.step,250); // adjust this number to affect granularity
-                            // lower numbers are more accurate, but more CPU-expensive
-    };
-    obj.pause = function() {
-        ms = obj.step();
-        clearInterval(timer);
-    };
-    pausingBtn.onclick = obj.pause;
-    resumeBtn.onclick = obj.resume();
-    obj.step = function() {
-        var now = Math.max(0,ms-(new Date().getTime()-startTime)),
-            m = Math.floor(now/60000), s = Math.floor(now/1000)%60;
-        s = (s < 10 ? "0" : "")+s;
-        display.innerHTML = m+":"+s;
-        if( now == 0) {
-            clearInterval(timer);
-            obj.resume = function() {};
-            if( oncomplete) oncomplete();
-        }
-        return now;
-    };
-    obj.resume();
-    return obj;
-}
-
-var timer = startTimer(10, "output", function() {alert("Done!");});
-//var timer2 = startTimer(2, "output", function() {alert("Done2!");});
-//doTiming();
+initializeTimer();
