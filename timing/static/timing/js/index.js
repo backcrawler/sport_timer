@@ -32,7 +32,14 @@ function findCheckboxes() {
 }
 
 function parseCurUrl(){
-    1;  //TODO
+    let curUrl = window.location.href;
+    let arr = curUrl.split('/').reverse();
+    if (arr[0] === ""){
+        return arr[1]
+    }
+    else {
+        return arr[0]
+    }
 }
 
 submitingButton = document.getElementById('submiting_btn');
@@ -108,24 +115,15 @@ testButton = document.getElementById('test_btn');
 
 testButton.onclick = function(e) {
     let xhr = new XMLHttpRequest();
-    xhr.open('POST', '/workouts/del-test/', true);
-    xhr.setRequestHeader('Conent-Type', 'application/json');
-    xhr.onreadystateexchange = function () {
-        if (xhr.readyState ===4 && xhr.status === 200) {
-            let json_resp = JSON.parse(xhr.responseText);
-            console.log('SUCCESS');
-            console.log(json_resp)
-        }
-        else {
-            let json_resp = JSON.parse(xhr.responseText);
-            console.log('FAIL');
-            console.log(json_resp)
-        }
-    }
     let token = $('input[name=csrfmiddlewaretoken]').val();
-    let body = JSON.stringify({"name": "Becca", "csrfmiddlewaretoken": token});
-    console.log($('input[name=csrfmiddlewaretoken]').val());
+    xhr.open('POST', '/workouts/del-test/', false);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('X-CSRFToken', token);
+    let body = JSON.stringify({"name": "Becca", 'wrk_id': parseCurUrl()});
     console.log(body);
     xhr.send(body);
     console.log('HERE');
+    if (xhr.status === 200) {
+        console.log(xhr.responseText);
+}
 };

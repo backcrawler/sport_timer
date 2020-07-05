@@ -9,7 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, DetailView, UpdateView, ListView, DeleteView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, renderer_classes
-from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer, StaticHTMLRenderer
+from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer, StaticHTMLRenderer, HTMLFormRenderer
 
 from .models import Exercise, Workout
 from .forms import WorkoutForm, ExerciseForm, MyExerciseForm
@@ -206,11 +206,18 @@ def drag_drop(request):
     #     content_type="application/json"
     # )
 
-
+# @api_view(('POST',))
+# @renderer_classes((HTMLFormRenderer,))
 def del_test(request):
     if request.method != 'POST':
         raise Http404
-    print('RECEIVED:', request.POST)
+    print('POST:', request.POST)
+    print('ID:', request.POST.get('wrk_id'))
+    print('METHOD:', request.method)
     name = request.POST.get('name')
     print(name)
     return HttpResponseRedirect(redirect_to='/')
+
+
+def test_timer(request):
+    return render(request, 'timing/test_timer.html')

@@ -34,6 +34,15 @@ class Exercise(models.Model):
 
     objects = models.Manager()
 
+    @classmethod
+    def check_permission(cls, request):
+        ids = tuple(map(lambda x: int(x), request.POST.getlist('exrs[]')))
+        selected_exrs = cls.objects.filter(id__in=ids)
+        db_exrs = cls.objects.filter(owner=...)
+        ownage_checked = all(map(lambda x: x.plan.owner == request.user, selected_exrs))
+        if len(ids) == selected_exrs.count() and ownage_checked:
+            ...
+
     def save(self, *args, **kwargs):
         if self.order is None:
             existing = self.__class__.objects.filter(plan=self.plan)

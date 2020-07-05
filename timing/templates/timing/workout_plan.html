@@ -24,9 +24,11 @@
 
 {% block content %}
     <section id="SimpleList" class="SimpleList">
+        <form method="post" action="/workouts/del-test/">
         <article class="StackedListWrapper">
             <header class="StackedListHeader"><h3 class="Heading Heading--size3 Heading--colorWhite">{{ workout.name }}</h3></header>
             <div class="StackedList" tabindex="0">
+                <input type="hidden" name="wrk_id" value="{{ workout.id }}">
                 {% for exr in exercises %}
                 <div class="StackedListItem StackedListItem--isDraggable StackedListItem--item1" tabindex="1">
                     <div class="StackedListContent card" id="elem_{{exr.id}}">
@@ -34,7 +36,7 @@
 <!--                                <div class="DragHandle"></div>-->
 <!--                        <div class="card" style="width:10px; height:10px">-->
 <!--                        </div>-->
-<!--                        <input type="checkbox" name="posting_box"  id="cbox_{{exr.id}}" style="right:0px; top:0px">-->
+                        <input type="checkbox" name="posting_box"  id="cbox_{{exr.id}}" style="right:0px; top:0px" value="{{exr.id}}">
                         <div class="Pattern Pattern--typeHalftone"></div>
                         <div class="Pattern Pattern--typePlaced"></div>
                     </div>
@@ -43,9 +45,11 @@
             </div>
         </article>
         {% csrf_token %}
+        <button type="submit" class="btn btn-info">Delete chosen</button>
+        </form>
+<!--        <button type="submit" class="btn btn-info" id="test_btn">Test data</button>-->
         <button type="submit" class="btn btn-warning" id="submiting_btn">Submit data</button>
         <button type="submit" class="btn btn-danger align-right" id="deleting_btn">Delete posts</button>
-        <button type="submit" class="btn btn-info" id="test_btn">Test data</button>
         <div id="results"></div>
     </section>
 
@@ -63,8 +67,11 @@
 
 
 {% block scripts %}
-    <script src="{% static 'timing/js/test1.js' %}"></script>
-    <script src="{% static 'timing/js/test2.js' %}"></script>
-    <script src="{% static 'timing/js/test3.js' %}"></script>
+    <script src="{% static 'timing/js/dragger1.js' %}"></script>
+    <script src="{% static 'timing/js/dragger2.js' %}"></script>
+    <script src="{% static 'timing/js/dragger3.js' %}"></script>
     <script src="{% static 'timing/js/index.js' %}"></script>
+    <script>
+        var csrftoken = "{{ csrf_token }}";
+    </script>
 {% endblock scripts %}
