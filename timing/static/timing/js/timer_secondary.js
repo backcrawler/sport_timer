@@ -85,9 +85,9 @@ let Timer = function(obj){  //main "class" object
     };
 }
 
-
+//test
 let timers = [];
-let info = [10,5,3,0,5];
+let info = [['First', 5], ['Second', 3], ['Third', 7]];
 for (let i=0; i<info.length; i++) {
     first = info[i];
     second = info[i+1];

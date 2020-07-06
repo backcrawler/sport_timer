@@ -17,7 +17,6 @@
         <div class="col-4">Cooldown time: {{ workout.cooldown_time }}</div>
         <div>Laps required: {{ workout.laps }}</div>
         </div>
-        <div class="row "><a href="{% url 'timing:workout_update' workout.id %}" class="text-center">Update</a></div>
     </div>
 
 {% endblock heading %}
@@ -45,11 +44,11 @@
             </div>
         </article>
         {% csrf_token %}
-        <button type="submit" class="btn btn-info">Delete chosen</button>
+            <button class="btn btn-warning" id="submiting_btn">Submit data</button>
+            <button type="submit" class="btn btn-danger">Delete chosen</button>
+            <a class="btn btn-info align-right" href="{% url 'timing:play_timer' workout.id %}">Start exercise</a>
         </form>
-<!--        <button type="submit" class="btn btn-info" id="test_btn">Test data</button>-->
-        <button type="submit" class="btn btn-warning" id="submiting_btn">Submit data</button>
-        <button type="submit" class="btn btn-danger align-right" id="deleting_btn">Delete posts</button>
+
         <div id="results"></div>
     </section>
 
@@ -62,7 +61,7 @@
         </ul>
     </div>
     <p></p>
-    <p><a href=".."><-- Back to full workout list</a></p>
+    <p><a href="{% url 'timing:show_workouts' %}"><-- Back to full workout list</a></p>
 {% endblock content %}
 
 

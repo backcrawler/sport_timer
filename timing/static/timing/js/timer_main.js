@@ -1,14 +1,17 @@
-var btn = document.getElementById("startPauseBtn");
+var btn = document.getElementById("startPauseBtn");  //vars kinda required here, not lets
 var resBtn = document.getElementById("resetBtn");
 var slider = document.getElementById("slider");
-var output = document.getElementById("output");
+var output = document.getElementById("output");  //time for the exercise goes here
+var workoutName = document.getElementById("wrk-name");  //name of the exercise goes here
 
-var timings = [5, 2, 3];
-var running = 0;
-var j = 0;
-var time = timings[0]*10;
+var timings = findForPlay();  //loading names and durations of exercises
+var running = 0;  //flag
+var j = 0;  //identifier for current exercise, starts from 0
+var time = setInitTime();  //current time, multiplied by 10 cause it's measured in 100ms per tick
+//var clingSound = new Audio('/static/timing/sounds/end_sound.wav');  //sound when exercise changes
 
 function startPause(){
+    workoutName.style.background = getBackColor(timings[j])
 	if(running == 0){
 		running = 1;
 		decrement();
@@ -21,9 +24,9 @@ function startPause(){
 
 function reset(){
 	running = 0;
-    time = timings[0]*10;
-    j = 0;
-	output.innerHTML = "00:00";
+    j = 0;  //setting identifier for the first element here too
+    initializeTimer();
+    workoutName.style.background = getBackColor(timings[j])
 	btn.innerHTML = "Start";
 };
 
@@ -36,8 +39,9 @@ function decrement(){
                 output.innerHTML = "00:00";
                 slider.style.width = 0 + "%";
                 j++;
-                if (timings[j] != undefined){
-                    time = timings[j]*10;
+                if (timings[j][1] != undefined){
+                    time = timings[j][1]*10;
+                    workoutName.innerHTML = timings[j][0]
                     startPause();
                     return null;
                 }
@@ -51,7 +55,7 @@ function decrement(){
 			if(secs <= 9){
 				secs = "0" + secs;
 			}
-			slider.style.width = time/timings[j] *10 + "%"
+			slider.style.width = time/timings[j][1]*10 + "%"
 			output.innerHTML = mins + ":" + secs;
 			decrement();
 		}, 100);
@@ -59,6 +63,7 @@ function decrement(){
 };
 
 function initializeTimer() {
+    time = setInitTime();
     let mins = Math.floor(time / 10 / 60);
     if(mins <= 9){
         mins = "0" + mins;
@@ -67,7 +72,30 @@ function initializeTimer() {
     if(secs <= 9){
         secs = "0" + secs;
     }
+    workoutName.innerHTML = timings[0][0]
+    workoutName.style.background = getBackColor(timings[0])
     output.innerHTML = mins + ":" + secs;
 };
+
+function setInitTime() {
+    try {
+        let inner = timings[j][1]*10 + 1;  //choosing first element of timings again; plus 1 in order to escape 1 extra tick
+        return inner;
+    }
+    catch (e) {
+        output.innerHTML = "00:00";
+        workoutName.innerHTML = "No exercises yet";
+        throw e;
+    }
+}
+
+function getBackColor(timingInstance) {
+    if (timingInstance[2] === 'exercise') {
+        return 'green';
+    }
+    else if (timingInstance[2] === 'break') {
+        return 'orange';
+    }
+}
 
 initializeTimer();

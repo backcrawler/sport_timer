@@ -1,0 +1,62 @@
+{% extends 'timing/base.html' %}
+{% load static %}
+
+{% block styles %}
+    <style>
+    #output {
+      margin-top: 10px;
+      color: black;
+      font-size: 62px;
+      font-family: sans-serif;
+    }
+
+    #wrk-name {
+      color: black;
+      font-size: 50px;
+      font-family: sans-serif;
+    }
+
+    #slider {
+      position: absolute;
+      height: 8px;
+      top: calc(100% - 8px);
+      left: 0;
+      background-color: yellow;
+      width: 100%;
+    }
+  </style>
+{% endblock styles %}
+
+{% block heading %}
+  <div class="text-center">
+    <div class="card"><span id="wrk-name" ></span></div>
+    <p><span id="output"></span></p>
+
+    <div class="row" style="margin-top: 70px">
+      <div class="col-md-6">
+        <button id="startPauseBtn" onclick="startPause()" class="btn btn-primary" style="margin-right:5px; font-size:2rem">Start</button>
+      </div>
+      <div class="col-md-6">
+        <button id="resetBtn" onclick="reset()" class="btn btn-danger" style="margin-left:5px; font-size:2rem">Reset</button>
+      </div>
+    </div>
+
+  </div>
+{% endblock heading %}
+
+{% block content %}
+  <div id="exr-block" class="text-center">
+    {% for exr in exrs %}
+      <div class="exr-row card"><h3 class="exr-name">{{exr.name}}</h3>
+        <span class="exr-duration">{{exr.duration}}</span><span class="exr-preptime">{{exr.preptime}}</span>
+        <div class="exr-kind" style="display:none">{{exr.kind}}</div>
+      </div>
+    {% endfor %}
+  </div>
+  <div id="slider"></div>
+{% endblock content %}
+
+{% block scripts %}
+  <script src="{% static 'timing/js/exr_finder.js' %}"></script>
+  <script src="{% static 'timing/js/timer_main.js' %}"></script>
+{% endblock scripts %}

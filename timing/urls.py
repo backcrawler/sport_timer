@@ -16,5 +16,6 @@ urlpatterns = [
          views.exercise_delete, name='del_exercise'),
     path('workouts/draggy/', views.drag_drop, name='draggy'),
     path('workouts/del-test/', views.del_test, name='del-test'),
-    path('test_timer/', views.test_timer, name='test_timer'),
+    path('test_timer/', views.test_timer, name='test_timer'),  # TODO: delete this
+    path('workouts/<int:wrk_id>/play/', views.play_timer, name='play_timer'),
     ]

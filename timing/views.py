@@ -221,3 +221,28 @@ def del_test(request):
 
 def test_timer(request):
     return render(request, 'timing/test_timer.html')
+
+
+def play_timer(request, wrk_id):
+    '''Shows exercises from a particular workout in order to finally play them'''
+    workout = get_object_or_404(Workout, id=wrk_id)
+    if workout.owner != request.user:
+        raise Http404
+    exrs = workout.exercise_set.order_by('order')
+    context = {'workout': workout, 'exrs': exrs}
+    return render(request, 'timing/main_timer_page.html', context=context)
+
+
+class WorkoutPlayDetaillView(LoginRequiredMixin, DetailView):
+    '''Shows exercises from a particular workout in order to finally play them'''
+    template_name = "timing/main_timer_page.html"
+    model = Workout
+    pk_url_kwarg = "wrk_id"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        workout = context.get('workout')
+        if workout.owner != self.request.user:
+            raise Http404
+        context['exrs'] = workout.exercise_set.order_by('order')
+        return context

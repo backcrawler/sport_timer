@@ -13,4 +13,4 @@ function findElems() {
     return ids;
 }
 
-findElems()
+findElems();
