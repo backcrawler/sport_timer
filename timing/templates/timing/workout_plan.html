@@ -13,29 +13,31 @@
 
     <div class="card marginer">
         <div class="row">
-        <div class="col-4">Warmup time: {{ workout.warmup_time }}</div>
-        <div class="col-4">Cooldown time: {{ workout.cooldown_time }}</div>
-        <div>Laps required: {{ workout.laps }}</div>
+        <div class="col-6 text-center">Warmup time: {{ workout.warmup_time }}</div>
+        <div class="col-6 text-center">Cooldown time: {{ workout.cooldown_time }}</div>
         </div>
     </div>
+    <a href="{% url 'timing:new_exercise' workout.id %}" class="btn btn-secondary">Add another exercise</a>
+    <a href="{% url 'timing:workout_update' workout.id %}" class="btn btn-secondary">Update</a>
+    <a href="{% url 'timing:del_workout' workout.id %}" class="btn btn-secondary">Delete this</a>
 
 {% endblock heading %}
 
 {% block content %}
     <section id="SimpleList" class="SimpleList">
-        <form method="post" action="/workouts/del-test/">
+        <form method="post" action="{% url 'timing:del-test' %}">
         <article class="StackedListWrapper">
-            <header class="StackedListHeader"><h3 class="Heading Heading--size3 Heading--colorWhite">{{ workout.name }}</h3></header>
+            <header class="StackedListHeader"><h3 class="text-center Heading Heading--size3 Heading--colorWhite">{{ workout.name }}</h3></header>
             <div class="StackedList" tabindex="0">
                 <input type="hidden" name="wrk_id" value="{{ workout.id }}">
                 {% for exr in exercises %}
                 <div class="StackedListItem StackedListItem--isDraggable StackedListItem--item1" tabindex="1">
                     <div class="StackedListContent card" id="elem_{{exr.id}}">
-                        <a href="{% url 'timing:exr_detail' workout.id exr.id %}"><h4 class="Heading Heading--size4 text-no-select">{{exr.name}}</h4></a>
+                        <a href="{% url 'timing:exr_detail' workout.id exr.id %}"><h4 class="Heading Heading--size4 text-no-select">{{exr.name}}:{{exr.order}}</h4></a>
 <!--                                <div class="DragHandle"></div>-->
 <!--                        <div class="card" style="width:10px; height:10px">-->
 <!--                        </div>-->
-                        <input type="checkbox" name="posting_box"  id="cbox_{{exr.id}}" style="right:0px; top:0px" value="{{exr.id}}">
+                        <input type="checkbox" name="posting_box"  id="cbox_{{exr.id}}" style="position:absolute; right:0px; top:0px" value="{{exr.id}}">
                         <div class="Pattern Pattern--typeHalftone"></div>
                         <div class="Pattern Pattern--typePlaced"></div>
                     </div>

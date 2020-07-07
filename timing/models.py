@@ -1,5 +1,6 @@
-from django.db import models
+from django.db import models, router
 from django.conf import settings
+from django.db.models.deletion import Collector
 
 
 class Workout(models.Model):
@@ -14,6 +15,11 @@ class Workout(models.Model):
 
     objects = models.Manager()
 
+    # def clean(self):
+    #     cleaned_data = super().clean()
+    #     print(cleaned_data)
+    #     return cleaned_data
+
     def __str__(self):
         return f'Workout("{self.name}", id_{self.id})'
 
@@ -23,8 +29,8 @@ class Exercise(models.Model):
 
     name = models.CharField(max_length=42)
     types = [
-        ('exercise', 'Exercise'),
         ('break', 'Break time'),
+        ('exercise', 'Exercise'),
     ]
     kind = models.CharField(choices=types, max_length=8, default='exercise')  # either a full exercise or a break time
     duration = models.PositiveIntegerField(default=30)
@@ -43,6 +49,24 @@ class Exercise(models.Model):
         if len(ids) == selected_exrs.count() and ownage_checked:
             ...
 
+    def delete(self, using=None, keep_parents=False):  # rewriting delete method for correct sve representation
+        using = using or router.db_for_write(self.__class__, instance=self)
+        assert self.pk is not None, (
+                "%s object can't be deleted because its %s attribute is set to None." %
+                (self._meta.object_name, self._meta.pk.attname)
+        )
+        collector = Collector(using=using)
+        collector.collect([self], keep_parents=keep_parents)
+        for_changing = self.__class__.objects.filter(order__gte=self.order)  # gte required for correct order saving
+        print('FOR CHANGING: ', for_changing)
+        del_result = collector.delete()
+        for exr in for_changing:
+            print('BEFORE: ', exr)
+            exr.order -= 1
+            exr.save()
+            print('AFTER: ', exr)
+        return del_result
+
     def save(self, *args, **kwargs):
         if self.order is None:
             existing = self.__class__.objects.filter(plan=self.plan)
@@ -50,4 +74,4 @@ class Exercise(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f'Exercise("{self.name}", plan:{self.plan})'
+        return f'Exercise("{self.name}", plan:{self.plan}, order:{self.order})'

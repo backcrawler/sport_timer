@@ -9,16 +9,25 @@
     <form action="{% url 'timing:new_exercise' workout.id %}" method='post'>
         {% csrf_token %}
         {% for field in form %}
-        {% if field.label == Kind %}
-        <p>{{field.label}}: {{field}}</p>
-        {% else %}
-        <p>{{field.label}}: {{field}}</p>
-        {% endif %}
+            {% if field.label == 'Kind' %}
+            <p>
+                <select id="{{field.id_for_label}}" name="{{field.name}}" onchange="kindAutoDetect()">
+                    {% for x in field %}
+                    <option value="{{x.data.value}}" selected="{{x.data.selected}}">{{x.data.label}}</option>
+                    {% endfor %}
+                </select>
+            </p>
+            {% else %}
+                {% for x in field %}
+                <p><input name="{{x.data.name}}" {% if x.data.value %}value="{{x.data.value}}"{% endif %} placeholder="{{field.label}}"
+                          type="{{x.data.type}}" {% for attr, val in x.data.attrs.items %} {{attr}}="{{val}}" {% endfor %}></p>
+                {% endfor %}
+            {% endif %}
         {% endfor %}
         <button name="submit">add exercise</button>
     </form>
 {% endblock %}
 
 {% block scripts %}
-    <script src="{% static 'timing/js/test_kind.js' %}"></script>
+    <script src="{% static 'timing/js/kind_callback.js' %}"></script>
 {% endblock scripts %}

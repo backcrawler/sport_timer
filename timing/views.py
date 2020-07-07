@@ -12,7 +12,7 @@ from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer, StaticHTMLRenderer, HTMLFormRenderer
 
 from .models import Exercise, Workout
-from .forms import WorkoutForm, ExerciseForm, MyExerciseForm
+from .forms import WorkoutForm, ExerciseForm
 
 
 def home(request):
@@ -53,8 +53,7 @@ class WorkoutCreateView(LoginRequiredMixin, CreateView):
     '''Creates a Workout instance'''
     template_name = 'timing/new_workout.html'
     success_url = reverse_lazy('timing:show_workouts')
-    model = Workout
-    fields = ['name', 'warmup_time', 'cooldown_time']
+    form_class = WorkoutForm
 
     def setup(self, request, *args, **kwargs):
         self.user = request.user
@@ -136,7 +135,6 @@ class ExerciseCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['workout'] = self.workout
-        print(context)
         return context
 
     def form_valid(self, form):
@@ -167,18 +165,19 @@ class ExerciseUpdateView(LoginRequiredMixin, UpdateView):
         return context_data
 
 
-@login_required
-def exercise_delete(request, wrk_id, exr_id):
-    '''Deletes this Exercise instance, uses custom logic inside the model'''
-    exercise = get_object_or_404(Exercise, id=exr_id)
-    workout = get_object_or_404(Workout, id=wrk_id)
-    if workout.owner != request.user:
-        raise Http404
-    if request.method == 'POST':
-        exercise.del_exr()
-        return HttpResponseRedirect(reverse('timing:workout_detail', args=[wrk_id]))
-    context = {'exercise': exercise, 'workout': workout}
-    return render(request, 'timing/exercise_deletion.html', context)
+class ExerciseDeleteView(LoginRequiredMixin, DeleteView):
+    '''Deletes this Workout instance'''
+    template_name = 'timing/exercise_deletion.html'
+    success_url = '../..'
+    pk_url_kwarg = 'exr_id'
+    model = Exercise
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        exr = context.get('exercise')
+        if exr.plan.owner != self.request.user:
+            raise Http404
+        return context
 
 
 @api_view(('POST',))
@@ -201,36 +200,22 @@ def drag_drop(request):
     else:
         response_data['result'] = 'Failure'
     return Response(data=response_data)
-    # return HttpResponse(
-    #     json.dumps(response_data),
-    #     content_type="application/json"
-    # )
+
 
 # @api_view(('POST',))
 # @renderer_classes((HTMLFormRenderer,))
+@login_required
 def del_test(request):
     if request.method != 'POST':
         raise Http404
-    print('POST:', request.POST)
-    print('ID:', request.POST.get('wrk_id'))
-    print('METHOD:', request.method)
-    name = request.POST.get('name')
-    print(name)
-    return HttpResponseRedirect(redirect_to='/')
-
-
-def test_timer(request):
-    return render(request, 'timing/test_timer.html')
-
-
-def play_timer(request, wrk_id):
-    '''Shows exercises from a particular workout in order to finally play them'''
-    workout = get_object_or_404(Workout, id=wrk_id)
-    if workout.owner != request.user:
-        raise Http404
-    exrs = workout.exercise_set.order_by('order')
-    context = {'workout': workout, 'exrs': exrs}
-    return render(request, 'timing/main_timer_page.html', context=context)
+    wrk_id = request.POST.get('wrk_id')
+    print('ID:', wrk_id)
+    ids = tuple(map(lambda x: int(x), request.POST.getlist('posting_box')))
+    print(ids)
+    selected_posts = Exercise.objects.filter(id__in=ids)
+    for exr in selected_posts:
+        exr.delete()
+    return HttpResponseRedirect(redirect_to=f'/workouts/{wrk_id}')  # kinda lazy  # TODO: rewrite
 
 
 class WorkoutPlayDetaillView(LoginRequiredMixin, DetailView):
