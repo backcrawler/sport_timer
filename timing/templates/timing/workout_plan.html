@@ -2,6 +2,15 @@
 {% load static %}
 
 {% block styles %}
+    <style>
+        .centered-block {
+            margin-top: 2%;
+            margin-bottom: 3%;
+            margin-left: auto;
+            margin-right: auto;
+            width: 38%
+        }
+    </style>
 <!--    <link rel="stylesheet" type="text/css" href="{% static 'timing/css/draggy.css' %}">-->
     <script src="{% static 'js/jquery.min.js' %}"></script>
 {% endblock styles %}
@@ -17,10 +26,10 @@
         <div class="col-6 text-center">Cooldown time: {{ workout.cooldown_time }}</div>
         </div>
     </div>
+    <div class="centered-block">
     <a href="{% url 'timing:new_exercise' workout.id %}" class="btn btn-secondary">Add another exercise</a>
     <a href="{% url 'timing:workout_update' workout.id %}" class="btn btn-secondary">Update</a>
-    <a href="{% url 'timing:del_workout' workout.id %}" class="btn btn-secondary">Delete this</a>
-
+    <a href="{% url 'timing:del_workout' workout.id %}" class="btn btn-secondary" style="vertical-align:middle">Delete this</a></div>
 {% endblock heading %}
 
 {% block content %}
@@ -46,24 +55,17 @@
             </div>
         </article>
         {% csrf_token %}
-            <button class="btn btn-warning" id="submiting_btn">Submit data</button>
-            <button type="submit" class="btn btn-danger">Delete chosen</button>
-            <a class="btn btn-info align-right" href="{% url 'timing:play_timer' workout.id %}">Start exercise</a>
+            <div class="centered-block">
+                <button class="btn btn-warning" id="submiting_btn">Submit data</button>
+                <button type="submit" class="btn btn-danger">Delete chosen</button>
+                <a class="btn btn-info align-right" href="{% url 'timing:play_timer' workout.id %}">Start exercise</a>
+            </div>
         </form>
 
         <div id="results"></div>
     </section>
-
-    <div class="row">
-        <ul>
-        <li><a href="{% url 'timing:new_exercise' workout.id %}" >Add another exercise</a></li>
-        <li><a href="{% url 'timing:workout_update' workout.id %}" >Update</a></li>
-        <li><a href="{% url 'timing:del_workout' workout.id %}" >Delete this</a></li>
-
-        </ul>
-    </div>
     <p></p>
-    <p><a href="{% url 'timing:show_workouts' %}"><-- Back to full workout list</a></p>
+    <p><a href="{% url 'timing:show_workouts' %}" class="btn btn-secondary"><-- Back to full workout list</a></p>
 {% endblock content %}
 
 

@@ -2,11 +2,11 @@
 {% load static %}
 
 {% block heading %}
-    <h2>Add new exercise to {{workout.name}}</h2>
+    <h2 class="text-center">Add new exercise to {{workout.name}}</h2>
 {% endblock %}
 
 {% block content %}
-    <form action="{% url 'timing:new_exercise' workout.id %}" method='post'>
+    <form action="{% url 'timing:new_exercise' workout.id %}" method='post' class="text-center">
         {% csrf_token %}
         {% for field in form %}
             {% if field.label == 'Kind' %}
@@ -24,7 +24,7 @@
                 {% endfor %}
             {% endif %}
         {% endfor %}
-        <button name="submit">add exercise</button>
+        <button name="submit" class="btn btn-success">add exercise</button>
     </form>
 {% endblock %}
 

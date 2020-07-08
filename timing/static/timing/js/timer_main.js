@@ -96,6 +96,12 @@ function getBackColor(timingInstance) {
     else if (timingInstance[2] === 'break') {
         return 'orange';
     }
+    else if (timingInstance[2] === 'warmup') {
+        return 'yellow';
+    }
+    else if (timingInstance[2] === 'cooldown') {
+        return 'blue';
+    }
 }
 
 initializeTimer();

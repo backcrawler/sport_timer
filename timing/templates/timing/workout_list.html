@@ -1,16 +1,24 @@
 {% extends 'timing/base.html' %}
 
+{% block styles %}
+  <style>
+    .larger-txt{
+      font-size: 1.4rem;
+    }
+  </style>
+{% endblock styles %}
+
 {% block heading %}
-    <h2>Workouts added</h2>
-    <p><a href="{% url 'timing:new_workout' %}">Add new</a></p>
+    <h2 class="text-center">Workouts added:</h2>
+    <p><a href="{% url 'timing:new_workout' %}" class="btn btn-secondary larger-txt">Add new</a></p>
 {% endblock heading %}
 
 {% block content %}
-    <ul>
+
     {% for workout in object_list %}
-        <li><a href="{% url 'timing:workout_detail' workout.id %}">{{workout.name}}</a></li>
+        <p><a href="{% url 'timing:workout_detail' workout.id %}" class="btn btn-outline-secondary btn-block btn-lg larger-txt">{{workout.name}}</a></p>
     {% empty %}
-        <li>No workouts have been added yet.</li>
+        <p><a href="#" class="btn btn-outline-secondary btn-block btn-lg larger-txt">No workouts have been added yet</a></p>
     {% endfor %}
-    </ul>
+
 {% endblock content %}

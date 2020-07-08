@@ -1,13 +1,24 @@
 {% extends 'timing/base.html' %}
 
+{% block styles %}
+  <style>
+    .margined{
+      margin-top: 4%;
+      margin-bottom: 3%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+{% endblock styles %}
+
 {% block heading %}
-    <h1>Hello</h1>
+    <h2 class="text-center">Profile of {{user}}</h2>
 {% endblock %}
 
 {% block content %}
-    <a href="{% url 'timing:show_workouts' %}">To THE WORKOUTS</a>
-    <p>Your stats:</p>
-    <p>Total workout number:</p>
-    <p>Total exercise number:</p>
-    <p>Favorite workouts list:</p>
+    <h3 class="margined">Your stats:</h3>
+    <p>Total workout number: {{wrk_num}}</p>
+    <p>Total exercise number: {{exr_num}}</p>
+<!--    <p>Favorite workouts list:</p>-->
+    <a href="{% url 'timing:show_workouts' %}" class="btn btn-secondary margined"><-- Back to the workouts</a>
 {% endblock %}

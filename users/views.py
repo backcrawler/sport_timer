@@ -5,6 +5,7 @@ from django.contrib.auth import login, authenticate
 
 from .forms import TimerCreationForm
 from .models import Profile
+from timing.models import Workout, Exercise
 
 
 def register(request):
@@ -26,4 +27,7 @@ def register(request):
 
 def profile_load(request):
     '''Profile for current user'''
-    return render(request, 'users/userprofile.html')
+    valid_workouts = Workout.objects.filter(owner=request.user)
+    valid_exrs = Exercise.objects.filter(plan__owner=request.user)
+    context = {'wrk_num': valid_workouts.count(), 'exr_num': valid_exrs.count()}
+    return render(request, 'users/userprofile.html', context=context)

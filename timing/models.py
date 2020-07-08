@@ -15,11 +15,6 @@ class Workout(models.Model):
 
     objects = models.Manager()
 
-    # def clean(self):
-    #     cleaned_data = super().clean()
-    #     print(cleaned_data)
-    #     return cleaned_data
-
     def __str__(self):
         return f'Workout("{self.name}", id_{self.id})'
 
@@ -41,13 +36,13 @@ class Exercise(models.Model):
     objects = models.Manager()
 
     @classmethod
-    def check_permission(cls, request):
-        ids = tuple(map(lambda x: int(x), request.POST.getlist('exrs[]')))
+    def check_permission(cls, request, ids):
+        '''Checks whether the received ids are valid or not'''
         selected_exrs = cls.objects.filter(id__in=ids)
-        db_exrs = cls.objects.filter(owner=...)
-        ownage_checked = all(map(lambda x: x.plan.owner == request.user, selected_exrs))
-        if len(ids) == selected_exrs.count() and ownage_checked:
-            ...
+        ownage_checked = all(map(lambda exr: exr.plan.owner == request.user, selected_exrs))
+        if len(ids) == selected_exrs.count() and ownage_checked and len(ids) != 0:
+            return True, selected_exrs
+        return False, cls.objects.none()
 
     def delete(self, using=None, keep_parents=False):  # rewriting delete method for correct sve representation
         using = using or router.db_for_write(self.__class__, instance=self)
@@ -58,13 +53,10 @@ class Exercise(models.Model):
         collector = Collector(using=using)
         collector.collect([self], keep_parents=keep_parents)
         for_changing = self.__class__.objects.filter(order__gte=self.order)  # gte required for correct order saving
-        print('FOR CHANGING: ', for_changing)
         del_result = collector.delete()
         for exr in for_changing:
-            print('BEFORE: ', exr)
             exr.order -= 1
             exr.save()
-            print('AFTER: ', exr)
         return del_result
 
     def save(self, *args, **kwargs):

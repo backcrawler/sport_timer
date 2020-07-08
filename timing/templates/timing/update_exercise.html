@@ -1,13 +1,25 @@
 {% extends 'timing/base.html' %}
 
+{% block styles %}
+  <style>
+    .centered-upt{
+      margin-top: 10%;
+      margin-bottom: 3%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+{% endblock styles %}
+
+
 {% block heading %}
-    <h2>Update {{object.name}}</h2>
+    <h2 class="text-center">Update {{object.name}}</h2>
 {% endblock %}
 
 {% block content %}
-    <form action="{% url 'timing:exr_update' workout.id object.id %}" method='post'>
+    <form action="{% url 'timing:exr_update' workout.id object.id %}" method='post' class="centered-upt text-center">
         {% csrf_token %}
         {{ form.as_p }}
-        <button name="submit">Save changes to this exercise</button>
+        <button name="submit" class="btn btn-success">Save changes to this exercise</button>
     </form>
 {% endblock %}

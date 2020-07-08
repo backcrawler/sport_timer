@@ -9,7 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, DetailView, UpdateView, ListView, DeleteView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, renderer_classes
-from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer, StaticHTMLRenderer, HTMLFormRenderer
+from rest_framework.renderers import JSONRenderer
 
 from .models import Exercise, Workout
 from .forms import WorkoutForm, ExerciseForm
@@ -69,7 +69,7 @@ class WorkoutCreateView(LoginRequiredMixin, CreateView):
 class WorkoutUpdateView(LoginRequiredMixin, UpdateView):
     '''Updates Workout instance'''
     model = Workout
-    fields = ['name', 'warmup_time', 'cooldown_time', 'laps']
+    fields = ['name', 'warmup_time', 'cooldown_time']
     pk_url_kwarg = 'wrk_id'
     template_name = 'timing/update_workout.html'
     success_url = '..'
@@ -186,36 +186,31 @@ def drag_drop(request):
     if request.method != 'POST':
         raise Http404
     ids = tuple(map(lambda x: int(x), request.POST.getlist('exrs[]')))
-    print('IDS:',ids)
-    selected_posts = Exercise.objects.filter(id__in=ids)
     response_data = {}
-    ownage_checked = all(map(lambda x: x.plan.owner == request.user, selected_posts))
-    if len(ids) == selected_posts.count() and ownage_checked:
+    flag, selected_posts = Exercise.check_permission(request, ids)
+    if flag:
         response_data['result'] = 'Success'
         mapping = {id_: order for order, id_ in enumerate(ids)}
         for exr in selected_posts:
             exr.order = mapping[exr.id]
             exr.save()
-            print('DONE')
     else:
         response_data['result'] = 'Failure'
     return Response(data=response_data)
 
 
-# @api_view(('POST',))
-# @renderer_classes((HTMLFormRenderer,))
 @login_required
 def del_test(request):
     if request.method != 'POST':
         raise Http404
     wrk_id = request.POST.get('wrk_id')
-    print('ID:', wrk_id)
     ids = tuple(map(lambda x: int(x), request.POST.getlist('posting_box')))
-    print(ids)
-    selected_posts = Exercise.objects.filter(id__in=ids)
-    for exr in selected_posts:
-        exr.delete()
-    return HttpResponseRedirect(redirect_to=f'/workouts/{wrk_id}')  # kinda lazy  # TODO: rewrite
+    response_redirect = HttpResponseRedirect(redirect_to=f'/workouts/{wrk_id}')  # kinda lazy  # TODO: rewrite
+    flag, selected_posts = Exercise.check_permission(request, ids)
+    if flag:
+        for exr in selected_posts:
+            exr.delete()
+    return response_redirect
 
 
 class WorkoutPlayDetaillView(LoginRequiredMixin, DetailView):

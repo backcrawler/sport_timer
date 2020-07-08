@@ -1,13 +1,21 @@
 {% extends 'timing/base.html' %}
 
+{% block styles %}
+  <style>
+    .mini-link{
+      color:black !important;
+    }
+  </style>
+{% endblock styles %}
+
 {% block heading %}
     <div class="jumbotron p-4 p-md-5 text-white rounded bg-dark">
     <div class="col-md-6 px-0">
-      <h1 class="display-4 font-italic">Interactive timer for sport exercices</h1>
+      <h1 class="display-4">Interactive timer for sport exercices</h1>
       <p class="lead my-3">Create your own workouts and exercices
       for saving and maintaining you progress
       </p>
-      <p class="lead mb-0"><a href="{% url 'users:register' %}" class="text-white font-weight-bold">Sign up for more...</a></p>
+      <p class="lead mb-0"><a href="{% url 'users:login' %}" class="text-white font-weight-bold">Sign in for more...</a></p>
     </div>
   </div>
 {% endblock %}
@@ -15,9 +23,26 @@
 {% block content %}
     <div class="blog-post">
         {% if user.is_authenticated %}
-        <a href="{% url 'timing:show_workouts' %}">To the workout list</a>
+        <h2 class="blog-post-title" style="text-align:center" ><a href="{% url 'timing:show_workouts' %}" class="btn btn-secondary">To the workout list</a></h2>
         {% else %}
-        <a href="{% url 'users:register' %}" class="text-white font-weight-bold">Sign up</a> for further expirience
+        <h2 style="text-align:center"><a href="{% url 'users:register' %}" class="text-white font-weight-bold mini-link">Sign up</a> for further experience...</h2>
         {% endif %}
+    </div>
+    <div class="blog-post">
+        <h2 class="blog-post-title">In short about Timing</h2>
+        <p>It allows you to create, manage and maintain you own Workouts. Every Workout consists of Exercises, after determining a particular workout
+          and its properties you are able to create, update and delete your exercises inside it.</p>
+        <p>The full list of your own workouts can be seen <a class="font-weight-bold mini-link" href="{% url 'timing:show_workouts' %}">here</a>.
+          And <a class="font-weight-bold mini-link" href="{% url 'timing:new_workout' %}">here</a> is the page for creating new workouts.
+          You must choose its name, general time for warmup and cooldown, other things will be handeled by your exercises</p>
+        <p>On the page of a particular workout there is a link for adding new exercises: "Add another exercise".
+          There you must determine new exercise's name, its duration, preptime (small portion of extra time before exercise) and exercise <i>type</i>.
+          All exercises are divided into 2 types: Exercise (who could've though?) and Break. 'Exercise' represents an active state while 'Break' is passive, it's meant to determine you break time
+          between exercises. When you choose "Break" option in the select box while creating a new exercise the name automatically changes for "Break" in terms of convinience</p>
+        <p>The created list can be managed after that. YOu may drag exercises and drop them in new position to change their order, but don't dorget to press "Submit data" to save it.
+          Multiple deletion is supported with "Delete chosen", just select the right checkboxes</p>
+        <p>After an exercise list is completed, time to work with it. Inside your workout press the button "Start exercise" and the Play Panel will be shown.
+          Exercises go from the beginning to the end, warmup and cooldown are also presented if you determined them. Press "Start" to begin your workout, control it with buttons
+          "Pause" and "Reset"</p>
     </div>
 {% endblock %}

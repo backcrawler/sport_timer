@@ -53,6 +53,12 @@
       </div>
     {% endfor %}
   </div>
+  <div class="card marginer">
+        <div class="row">
+        <div class="col-6 text-center" id="warmup">Warmup time: {{ workout.warmup_time }}</div>
+        <div class="col-6 text-center" id="cooldown">Cooldown time: {{ workout.cooldown_time }}</div>
+        </div>
+    </div>
   <div id="slider"></div>
 {% endblock content %}
 
