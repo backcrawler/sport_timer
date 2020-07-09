@@ -44,7 +44,7 @@ class Exercise(models.Model):
             return True, selected_exrs
         return False, cls.objects.none()
 
-    def delete(self, using=None, keep_parents=False):  # rewriting delete method for correct sve representation
+    def delete(self, using=None, keep_parents=False):  # rewriting delete method for correct exr representation
         using = using or router.db_for_write(self.__class__, instance=self)
         assert self.pk is not None, (
                 "%s object can't be deleted because its %s attribute is set to None." %
@@ -52,7 +52,7 @@ class Exercise(models.Model):
         )
         collector = Collector(using=using)
         collector.collect([self], keep_parents=keep_parents)
-        for_changing = self.__class__.objects.filter(order__gte=self.order)  # gte required for correct order saving
+        for_changing = self.__class__.objects.filter(order__gte=self.order)  # __gte required for correct order saving
         del_result = collector.delete()
         for exr in for_changing:
             exr.order -= 1

@@ -8,6 +8,11 @@
       margin-left: auto;
       margin-right: auto;
     }
+    .control-extra{
+      width: 30%;
+      margin-left: auto;
+      margin-right: auto;
+    }
   </style>
 {% endblock styles %}
 
@@ -18,7 +23,12 @@
 {% block content %}
     <form action="{% url 'timing:workout_update' object.id %}" method='post' class="centered-upt text-center">
         {% csrf_token %}
-        {{ form.as_p }}
+        {% for field in form %}
+          {% for x in field %}
+          <p>{{field.label}}: <input name="{{x.data.name}}" {% if x.data.value %}value="{{x.data.value}}"{% endif %} placeholder="{{field.label}}" class="form-control control-extra"
+                          type="{{x.data.type}}" {% for attr, val in x.data.attrs.items %} {{attr}}{% if val is not False %}="{{val}}"{% endif %} {% endfor %}></p>
+          {% endfor %}
+        {% endfor %}
         <button name="submit" class="btn btn-success">Save changes to this workout</button>
     </form>
 {% endblock %}

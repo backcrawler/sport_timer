@@ -1,5 +1,17 @@
 {% extends 'timing/base.html' %}
 
+{% block styles %}
+    <style>
+        .centered-block {
+            margin-top: 2%;
+            margin-bottom: 4%;
+            margin-left: auto;
+            margin-right: auto;
+            width: 18%
+        }
+    </style>
+{% endblock styles %}
+
 {% block heading %}
     <h2 class="text-center">{{ exercise.name }} details</h2>
 {% endblock %}
@@ -10,11 +22,11 @@
         <p>Preptime: {{ exercise.preptime }}</p>
     </div>
 
-    <div class="row">
-        <p><a href="{% url 'timing:exr_update' workout.id exercise.id %}" class="btn btn-info">Update</a></p>
-        <p><a href="{% url 'timing:del_exercise' workout.id exercise.id %}" class="btn btn-danger">Delete this</a></p>
+    <div class="centered-block">
+        <a href="{% url 'timing:exr_update' workout.id exercise.id %}" class="btn btn-info">Update</a>
+        <a href="{% url 'timing:del_exercise' workout.id exercise.id %}" class="btn btn-danger">Delete this</a>
     </div>
 
     <p></p>
-    <p><a href=".."><-- Back to {{workout.name}}</a></p>
+    <p><a href=".." class="btn btn-secondary"><-- Back to {{workout.name}}</a></p>
 {% endblock %}

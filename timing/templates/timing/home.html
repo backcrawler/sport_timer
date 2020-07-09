@@ -15,7 +15,9 @@
       <p class="lead my-3">Create your own workouts and exercices
       for saving and maintaining you progress
       </p>
+      {% if not user.is_authenticated %}
       <p class="lead mb-0"><a href="{% url 'users:login' %}" class="text-white font-weight-bold">Sign in for more...</a></p>
+      {% endif %}
     </div>
   </div>
 {% endblock %}
@@ -29,7 +31,7 @@
         {% endif %}
     </div>
     <div class="blog-post">
-        <h2 class="blog-post-title">In short about Timing</h2>
+        <h2 class="blog-post-title">In short about Sport Timer</h2>
         <p>It allows you to create, manage and maintain you own Workouts. Every Workout consists of Exercises, after determining a particular workout
           and its properties you are able to create, update and delete your exercises inside it.</p>
         <p>The full list of your own workouts can be seen <a class="font-weight-bold mini-link" href="{% url 'timing:show_workouts' %}">here</a>.
@@ -39,10 +41,10 @@
           There you must determine new exercise's name, its duration, preptime (small portion of extra time before exercise) and exercise <i>type</i>.
           All exercises are divided into 2 types: Exercise (who could've though?) and Break. 'Exercise' represents an active state while 'Break' is passive, it's meant to determine you break time
           between exercises. When you choose "Break" option in the select box while creating a new exercise the name automatically changes for "Break" in terms of convinience</p>
-        <p>The created list can be managed after that. YOu may drag exercises and drop them in new position to change their order, but don't dorget to press "Submit data" to save it.
+        <p>The created list can be managed after that. You may drag exercises and drop them in new position to change their order, but don't dorget to press "Submit data" to save it.
           Multiple deletion is supported with "Delete chosen", just select the right checkboxes</p>
         <p>After an exercise list is completed, time to work with it. Inside your workout press the button "Start exercise" and the Play Panel will be shown.
-          Exercises go from the beginning to the end, warmup and cooldown are also presented if you determined them. Press "Start" to begin your workout, control it with buttons
+          Exercises go from the beginning to the end, warmup and cooldown are also presented if you've determined them. Press "Start" to begin your workout, control it with buttons
           "Pause" and "Reset"</p>
     </div>
 {% endblock %}

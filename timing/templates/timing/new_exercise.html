@@ -1,30 +1,48 @@
 {% extends 'timing/base.html' %}
 {% load static %}
 
+{% block styles %}
+  <style>
+    .centered-cr{
+      margin-top: 10%;
+      margin-bottom: 3%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .control-extra{
+      width: 30%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+{% endblock styles %}
+
 {% block heading %}
-    <h2 class="text-center">Add new exercise to {{workout.name}}</h2>
+    <h2 class="text-center">Add new exercise to {{workout.name}}:</h2>
 {% endblock %}
 
 {% block content %}
-    <form action="{% url 'timing:new_exercise' workout.id %}" method='post' class="text-center">
+    <form action="{% url 'timing:new_exercise' workout.id %}" method='post' class="text-center centered-cr">
         {% csrf_token %}
         {% for field in form %}
+        <div class="form-group">
             {% if field.label == 'Kind' %}
-            <p>
-                <select id="{{field.id_for_label}}" name="{{field.name}}" onchange="kindAutoDetect()">
+            <p> {{field.label}}
+                <select id="{{field.id_for_label}}" name="{{field.name}}" onchange="kindAutoDetect()" class="form-control control-extra">
                     {% for x in field %}
-                    <option value="{{x.data.value}}" selected="{{x.data.selected}}">{{x.data.label}}</option>
+                    <option value="{{x.data.value}}" selected{% if x.data.selected %}="{{x.data.selected}}"{% endif %}>{{x.data.label}}</option>
                     {% endfor %}
                 </select>
             </p>
             {% else %}
                 {% for x in field %}
-                <p><input name="{{x.data.name}}" {% if x.data.value %}value="{{x.data.value}}"{% endif %} placeholder="{{field.label}}"
-                          type="{{x.data.type}}" {% for attr, val in x.data.attrs.items %} {{attr}}="{{val}}" {% endfor %}></p>
+                <p>{{field.label}}<input name="{{x.data.name}}" {% if x.data.value %}value="{{x.data.value}}"{% endif %} placeholder="{{field.label}}" class="form-control control-extra"
+                          type="{{x.data.type}}" {% for attr, val in x.data.attrs.items %} {{attr}}{% if val is not False %}="{{val}}"{% endif %} {% endfor %}></p>
                 {% endfor %}
             {% endif %}
+        </div>
         {% endfor %}
-        <button name="submit" class="btn btn-success">add exercise</button>
+        <button name="submit" class="btn btn-success">Add exercise</button>
     </form>
 {% endblock %}
 

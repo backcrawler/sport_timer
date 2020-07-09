@@ -10,6 +10,14 @@
             margin-right: auto;
             width: 38%
         }
+        .draggable-checkbox {
+            position: absolute;
+            right:1px;
+            top:25%
+        }
+        a {
+            color:#343434;
+        }
     </style>
 <!--    <link rel="stylesheet" type="text/css" href="{% static 'timing/css/draggy.css' %}">-->
     <script src="{% static 'js/jquery.min.js' %}"></script>
@@ -28,7 +36,7 @@
     </div>
     <div class="centered-block">
     <a href="{% url 'timing:new_exercise' workout.id %}" class="btn btn-secondary">Add another exercise</a>
-    <a href="{% url 'timing:workout_update' workout.id %}" class="btn btn-secondary">Update</a>
+    <a href="{% url 'timing:workout_update' workout.id %}" class="btn btn-secondary" style="margin-left:5px; margin-right:5px">Update</a>
     <a href="{% url 'timing:del_workout' workout.id %}" class="btn btn-secondary" style="vertical-align:middle">Delete this</a></div>
 {% endblock heading %}
 
@@ -36,17 +44,17 @@
     <section id="SimpleList" class="SimpleList">
         <form method="post" action="{% url 'timing:del-test' %}">
         <article class="StackedListWrapper">
-            <header class="StackedListHeader"><h3 class="text-center Heading Heading--size3 Heading--colorWhite">{{ workout.name }}</h3></header>
+            <header class="StackedListHeader" style="margin-top: 50px; margin-bottom: 30px; color:#1F334E"><h3 class="text-center Heading Heading--size3 Heading--colorWhite">{{ workout.name }}</h3></header>
             <div class="StackedList" tabindex="0">
                 <input type="hidden" name="wrk_id" value="{{ workout.id }}">
                 {% for exr in exercises %}
                 <div class="StackedListItem StackedListItem--isDraggable StackedListItem--item1" tabindex="1">
                     <div class="StackedListContent card" id="elem_{{exr.id}}">
-                        <a href="{% url 'timing:exr_detail' workout.id exr.id %}"><h4 class="Heading Heading--size4 text-no-select">{{exr.name}}:{{exr.order}}</h4></a>
+                        <h4 class="Heading Heading--size4 text-no-select text-center"><a href="{% url 'timing:exr_detail' workout.id exr.id %}">{{exr.name}}</a></h4>
 <!--                                <div class="DragHandle"></div>-->
 <!--                        <div class="card" style="width:10px; height:10px">-->
 <!--                        </div>-->
-                        <input type="checkbox" name="posting_box"  id="cbox_{{exr.id}}" style="position:absolute; right:0px; top:0px" value="{{exr.id}}">
+                        <input type="checkbox" name="posting_box"  id="cbox_{{exr.id}}" class="draggable-checkbox" value="{{exr.id}}">
                         <div class="Pattern Pattern--typeHalftone"></div>
                         <div class="Pattern Pattern--typePlaced"></div>
                     </div>
@@ -57,7 +65,7 @@
         {% csrf_token %}
             <div class="centered-block">
                 <button class="btn btn-warning" id="submiting_btn">Submit data</button>
-                <button type="submit" class="btn btn-danger">Delete chosen</button>
+                <button type="submit" class="btn btn-danger" style="margin-left:5px; margin-right:5px">Delete chosen</button>
                 <a class="btn btn-info align-right" href="{% url 'timing:play_timer' workout.id %}">Start exercise</a>
             </div>
         </form>

@@ -48,7 +48,7 @@
   <div id="exr-block" class="text-center">
     {% for exr in exrs %}
       <div class="exr-row card"><h3 class="exr-name">{{exr.name}}</h3>
-        <span class="exr-duration">{{exr.duration}}</span><span class="exr-preptime">{{exr.preptime}}</span>
+        <div class="exr-duration">{{exr.duration}}</div><div class="exr-preptime">{{exr.preptime}}</div>
         <div class="exr-kind" style="display:none">{{exr.kind}}</div>
       </div>
     {% endfor %}

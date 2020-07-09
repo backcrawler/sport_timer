@@ -35,7 +35,7 @@ class WorkoutListView(LoginRequiredMixin, ListView):
 
 
 class WorkoutDetailView(LoginRequiredMixin, DetailView):
-    '''shows students for each group, shadows group_details'''
+    '''Shows exercises for this workout'''
     template_name = "timing/workout_plan.html"
     model = Workout
     pk_url_kwarg = "wrk_id"
@@ -183,6 +183,7 @@ class ExerciseDeleteView(LoginRequiredMixin, DeleteView):
 @api_view(('POST',))
 @renderer_classes((JSONRenderer,))
 def drag_drop(request):
+    '''Changes order of exercises as a result of drag-n-drop api'''
     if request.method != 'POST':
         raise Http404
     ids = tuple(map(lambda x: int(x), request.POST.getlist('exrs[]')))
@@ -201,6 +202,7 @@ def drag_drop(request):
 
 @login_required
 def del_test(request):
+    '''Deletes multiple instances of exercises'''
     if request.method != 'POST':
         raise Http404
     wrk_id = request.POST.get('wrk_id')
