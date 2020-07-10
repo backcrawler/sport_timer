@@ -1,0 +1,1 @@
+[{"model": "timing.workout", "pk": 1, "fields": {"name": "Alpha", "warmup_time": 0, "cooldown_time": 0, "laps": 1, "date_added": "2020-07-02T13:07:56.925Z", "owner": 1}}, {"model": "timing.workout", "pk": 2, "fields": {"name": "Beta", "warmup_time": 0, "cooldown_time": 0, "laps": 2, "date_added": "2020-07-02T13:08:17.715Z", "owner": 1}}]

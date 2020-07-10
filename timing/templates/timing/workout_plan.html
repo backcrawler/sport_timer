@@ -15,6 +15,10 @@
             right:1px;
             top:25%
         }
+        .higher {
+            font-family: Playfair Display;
+            font-size: 1.25rem;
+        }
         a {
             color:#343434;
         }
@@ -30,8 +34,8 @@
 
     <div class="card marginer">
         <div class="row">
-        <div class="col-6 text-center">Warmup time: {{ workout.warmup_time }}</div>
-        <div class="col-6 text-center">Cooldown time: {{ workout.cooldown_time }}</div>
+        <div class="col-6 text-center higher">Warmup time: {{ workout.warmup_time }}</div>
+        <div class="col-6 text-center higher">Cooldown time: {{ workout.cooldown_time }}</div>
         </div>
     </div>
     <div class="centered-block">
@@ -59,6 +63,12 @@
                         <div class="Pattern Pattern--typePlaced"></div>
                     </div>
                 </div>
+                {% empty %}
+                    <div class="StackedListItem StackedListItem--isDraggable StackedListItem--item1" tabindex="1">
+                    <div class="StackedListContent card">
+                        <h4 class="Heading Heading--size4 text-no-select text-center">Nothing here yet</h4>
+                    <div class="Pattern Pattern--typeHalftone"></div>
+                    <div class="Pattern Pattern--typePlaced"></div>
                 {% endfor %}
             </div>
         </article>

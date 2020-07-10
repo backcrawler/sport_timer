@@ -1,0 +1,39 @@
+[
+  {
+    "model": "timing.exercise",
+    "pk": 10,
+    "fields": {
+      "name": "Exercise A",
+      "kind": "exercise",
+      "duration": 13,
+      "plan": 1,
+      "preptime": 0,
+      "order": 0
+    }
+  },
+  {
+    "model": "timing.exercise",
+    "pk": 11,
+    "fields": {
+      "name": "Exercise B",
+      "kind": "exercise",
+      "duration": 3,
+      "plan": 1,
+      "preptime": 0,
+      "order": 1
+    }
+  },
+  {
+    "model": "timing.exercise",
+    "pk": 12,
+    "fields": {
+      "name": "Exercise C",
+      "kind": "exercise",
+      "duration": 10,
+      "plan": 1,
+      "preptime": 5,
+      "order": 2
+    }
+  }
+
+]

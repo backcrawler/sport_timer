@@ -1,6 +1,7 @@
 from django.db import models, router
 from django.conf import settings
 from django.db.models.deletion import Collector
+from django.shortcuts import get_object_or_404
 
 
 class Workout(models.Model):
@@ -39,8 +40,11 @@ class Exercise(models.Model):
     def check_permission(cls, request, ids):
         '''Checks whether the received ids are valid or not'''
         selected_exrs = cls.objects.filter(id__in=ids)
+        wrk_id = request.POST.get('wrk_id')
+        main_workout = get_object_or_404(Workout, id=wrk_id)
+        main_count = main_workout.exercise_set.count()
         ownage_checked = all(map(lambda exr: exr.plan.owner == request.user, selected_exrs))
-        if len(ids) == selected_exrs.count() and ownage_checked and len(ids) != 0:
+        if len(ids) == main_count == selected_exrs.count() and ownage_checked and len(ids) != 0:
             return True, selected_exrs
         return False, cls.objects.none()
 
