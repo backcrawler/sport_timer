@@ -36,7 +36,10 @@ POSTGRES_PORT = loaded_dict['DB_PORT']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+if DEBUG:
+    ALLOWED_HOSTS = ['*']
+else:
+    ALLOWED_HOSTS = ['*']  # set my value
 
 
 # Application definition
@@ -142,6 +145,8 @@ if loaded_dict.get('MAIN_ADMIN_NAME') and loaded_dict.get('MAIN_ADMIN_MAIL'):
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'deployedstatic/')
 
 MEDIA_URL = '/images/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
+
